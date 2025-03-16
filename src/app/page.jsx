@@ -1,8 +1,5 @@
-import Spell from "./Spell"
-import Homepage from "./Homepage";
+import Homepage from "@ui/homepage";
 
 export default function Home() {
-  return (
-  <Homepage/>
-  );
+  return <Homepage />;
 }

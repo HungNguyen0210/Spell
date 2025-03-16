@@ -1,8 +1,9 @@
 "use client";
+
 import { useState } from "react";
 import Image from "next/image";
 import { FaPlay } from "react-icons/fa";
-import Spell from "./Spell";
+import Spell from "@ui/spell";
 
 export default function Homepage() {
   const [showSpell, setShowSpell] = useState(false);
