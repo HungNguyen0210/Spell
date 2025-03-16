@@ -2,7 +2,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { FaPlay } from "react-icons/fa";
-import Spell from "./spell";
+import Spell from "./Spell";
 
 export default function Homepage() {
   const [showSpell, setShowSpell] = useState(false);
@@ -16,7 +16,7 @@ export default function Homepage() {
         <Spell />
       ) : (
         <div className="flex flex-col justify-center items-center gap-6">
-          <div className="text-[200px] font-bold flex justify-center">
+          <div className="lg:text-[200px] text-8xl pt-24 pb-12 lg:pb-0 lg:pt-0 font-bold flex justify-center">
             <div className="text-[rgb(158,227,26)]">
               A<span className="text-[rgb(27,232,164)]"> B</span>
               <span className="text-[rgb(251,211,1)]"> C</span>
@@ -29,10 +29,10 @@ export default function Homepage() {
 
           <button
             onClick={() => setShowSpell(true)}
-            className="px-10 pt-6 pb-4 text-2xl bg-amber-300 rounded-2xl text-yellow-900 flex gap-6 cursor-pointer"
+            className="px-6 lg:px-10 pt-6 pb-4 text-2xl bg-amber-300 rounded-2xl text-yellow-900 flex gap-6 cursor-pointer"
           >
             BẮT ĐẦU
-            <FaPlay fontSize={30} />
+            <FaPlay className="text-2xl lg:text-3xl" />
           </button>
         </div>
       )}

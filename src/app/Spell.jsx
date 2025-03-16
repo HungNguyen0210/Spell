@@ -285,7 +285,7 @@ const Spell = () => {
                       alt={egg.letter}
                       width={350}
                       height={350}
-                      className="cursor-pointer transition-transform active:scale-90"
+                      className="cursor-pointer pt-14 lg:pt-14 transition-transform active:scale-90"
                       onClick={() => handleCrack(egg.id, egg.letter)}
                     />
                     {crackedEggs[egg.id] === "cracked" && (
@@ -294,7 +294,7 @@ const Spell = () => {
                         alt="Cracked Egg"
                         width={200}
                         height={200}
-                        className="absolute top-28 left-12"
+                        className="absolute top-48 left-12"
                       />
                     )}
                   </>
