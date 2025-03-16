@@ -1,6 +1,8 @@
 "use client";
+
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import { IoIosCloseCircleOutline } from "react-icons/io";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 
@@ -214,15 +216,23 @@ const Spell = () => {
   const [crackedEggs, setCrackedEggs] = useState({});
   const [isClient, setIsClient] = useState(false);
   const [selectedExamples, setSelectedExamples] = useState({});
+  const [currentLetter, setCurrentLetter] = useState(null);
+  const [showModal, setShowModal] = useState(false); // Quản lý trạng thái hiển thị modal
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
   const handleCrack = (id, letter) => {
+    if (currentLetter && !selectedExamples[currentLetter]) {
+      setShowModal(true); // Hiển thị modal cảnh báo
+      return;
+    }
+
     setCrackedEggs((prev) => ({ ...prev, [id]: "cracked" }));
     setTimeout(() => {
       setCrackedEggs((prev) => ({ ...prev, [id]: "hidden" }));
+      setCurrentLetter(letter);
     }, 800);
   };
 
@@ -231,6 +241,11 @@ const Spell = () => {
       ...prev,
       [id]: eggs.find((e) => e.letter === letter)?.example || "",
     }));
+    setCurrentLetter(null); // Cho phép chọn trứng khác sau khi học xong
+  };
+
+  const closeModal = () => {
+    setShowModal(false);
   };
 
   if (!isClient) return null;
@@ -240,12 +255,31 @@ const Spell = () => {
       className="h-screen w-screen flex flex-col justify-center items-center bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/bg.png')" }}
     >
-      {/* Ô nền chứa trứng và nội dung */}
-      <div className="w-full max-w-7xl h-[550px] bg-[#f6f4d3] rounded-3xl flex justify-center items-center p-6">
+      {/* Modal cảnh báo */}
+      {showModal && (
+        <div className="fixed inset-0 flex justify-center items-center z-50 bg-opacity-50">
+          <div className="bg-white p-6 rounded-3xl shadow-lg text-center relative lg:max-w-xl lg:h-56 max-w-[300px]">
+            {/* Nút đóng modal ở góc trên bên phải */}
+            <button
+              onClick={closeModal}
+              className="absolute lg:top-3 top-2 right-4 cursor-pointer text-black lg:text-gray-300 lg:hover:text-black"
+            >
+              <IoIosCloseCircleOutline className="lg:text-5xl text-4xl" />
+            </button>
+
+            <p className="text-2xl lg:text-5xl pt-6 lg:pt-12 font-semibold text-red-500">
+              Bé hãy học xong từ đã mở trước khi chọn trứng khác!
+            </p>
+          </div>
+        </div>
+      )}
+
+      {/* Ô nền chứa trứng */}
+      <div className="w-full lg:max-w-7xl max-w-[340px] h-[550px] bg-[#f6f4d3] rounded-3xl flex justify-center items-center p-6">
         <Swiper
           spaceBetween={10}
           breakpoints={{
-            375: { slidesPerView: 1.1 },
+            375: { slidesPerView: 1 },
             1024: { slidesPerView: 3.3 },
           }}
           className="w-full h-full"
@@ -273,7 +307,7 @@ const Spell = () => {
                   </div>
                 ) : crackedEggs[egg.id] === "hidden" ? (
                   <span
-                    className="text-[200px] font-bold absolute top-16 left-8 text-black cursor-pointer"
+                    className="text-[250px] font-bold absolute top-16 left-8 text-black cursor-pointer"
                     onClick={() => handleShowExample(egg.id, egg.letter)}
                   >
                     {egg.letter}
