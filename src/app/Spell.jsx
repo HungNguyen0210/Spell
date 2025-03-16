@@ -217,15 +217,17 @@ const Spell = () => {
   const [isClient, setIsClient] = useState(false);
   const [selectedExamples, setSelectedExamples] = useState({});
   const [currentLetter, setCurrentLetter] = useState(null);
-  const [showModal, setShowModal] = useState(false); // Quản lý trạng thái hiển thị modal
+  const [showModal, setShowModal] = useState(false);
+  const [learnedEggs, setLearnedEggs] = useState([]); // Danh sách trứng đã học
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  const handleCrack = (id, letter) => {
-    if (currentLetter && !selectedExamples[currentLetter]) {
-      setShowModal(true); // Hiển thị modal cảnh báo
+  const handleCrack = (id, letter, index) => {
+    // Kiểm tra nếu chưa học trứng trước đó
+    if (index > 0 && !learnedEggs.includes(eggs[index - 1].id)) {
+      setShowModal(true);
       return;
     }
 
@@ -241,7 +243,8 @@ const Spell = () => {
       ...prev,
       [id]: eggs.find((e) => e.letter === letter)?.example || "",
     }));
-    setCurrentLetter(null); // Cho phép chọn trứng khác sau khi học xong
+    setCurrentLetter(null);
+    setLearnedEggs((prev) => [...prev, id]); // Đánh dấu quả trứng đã học
   };
 
   const closeModal = () => {
@@ -258,8 +261,7 @@ const Spell = () => {
       {/* Modal cảnh báo */}
       {showModal && (
         <div className="fixed inset-0 flex justify-center items-center z-50 bg-opacity-50">
-          <div className="bg-white p-6 rounded-3xl shadow-lg text-center relative lg:max-w-xl lg:h-56 max-w-[300px]">
-            {/* Nút đóng modal ở góc trên bên phải */}
+          <div className="bg-white p-6 rounded-3xl shadow-lg text-center relative lg:max-w-xl lg:h-64 max-w-[300px]">
             <button
               onClick={closeModal}
               className="absolute lg:top-3 top-2 right-4 cursor-pointer text-black lg:text-gray-300 lg:hover:text-black"
@@ -268,7 +270,7 @@ const Spell = () => {
             </button>
 
             <p className="text-2xl lg:text-5xl pt-6 lg:pt-12 font-semibold text-red-500">
-              Bé hãy học xong từ đã mở trước khi chọn trứng khác!
+              Bé hãy học xong từ trước đó trước khi chọn trứng này!
             </p>
           </div>
         </div>
@@ -284,7 +286,7 @@ const Spell = () => {
           }}
           className="w-full h-full"
         >
-          {eggs.map((egg) => (
+          {eggs.map((egg, index) => (
             <SwiperSlide key={egg.id} className="flex justify-center">
               <div className="relative w-[300px] h-[300px] flex flex-col items-center">
                 {selectedExamples[egg.id] ? (
@@ -320,7 +322,7 @@ const Spell = () => {
                       width={350}
                       height={350}
                       className="cursor-pointer pt-14 lg:pt-14 transition-transform active:scale-90"
-                      onClick={() => handleCrack(egg.id, egg.letter)}
+                      onClick={() => handleCrack(egg.id, egg.letter, index)}
                     />
                     {crackedEggs[egg.id] === "cracked" && (
                       <Image
