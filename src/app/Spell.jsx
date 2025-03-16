@@ -210,7 +210,6 @@ const eggs = [
   },
 ];
 
-
 const Spell = () => {
   const [crackedEggs, setCrackedEggs] = useState({});
   const [isClient, setIsClient] = useState(false);
@@ -241,64 +240,70 @@ const Spell = () => {
       className="h-screen w-screen flex flex-col justify-center items-center bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/bg.png')" }}
     >
-      <Swiper
-        spaceBetween={10}
-        slidesPerView={3}
-        className="w-full max-w-7xl h-[600px]"
-      >
-        {eggs.map((egg) => (
-          <SwiperSlide key={egg.id} className="flex justify-center">
-            <div className="relative w-[300px] h-[300px]">
-              {selectedExamples[egg.id] ? (
-                <div className="flex flex-col items-center absolute top-0 left-0 w-full h-full">
-                  <div className="w-[400px] h-[400px] flex justify-center items-center">
-                    <Image
-                      src={egg.imgex}
-                      alt={egg.letter}
-                      width={400}
-                      height={400}
-                      className="max-w-[400px] max-h-[400px] w-full h-full object-contain"
+      {/* Ô nền chứa trứng và nội dung */}
+      <div className="w-full max-w-7xl h-[550px] bg-[#f6f4d3] rounded-3xl flex justify-center items-center p-6">
+        <Swiper
+          spaceBetween={10}
+          breakpoints={{
+            375: { slidesPerView: 1.1 },
+            1024: { slidesPerView: 3.3 },
+          }}
+          className="w-full h-full"
+        >
+          {eggs.map((egg) => (
+            <SwiperSlide key={egg.id} className="flex justify-center">
+              <div className="relative w-[300px] h-[300px] flex flex-col items-center">
+                {selectedExamples[egg.id] ? (
+                  <div className="flex flex-col items-center absolute top-0 left-0 w-full h-full">
+                    <div className="w-[400px] h-[400px] flex justify-center items-center">
+                      <Image
+                        src={egg.imgex}
+                        alt={egg.letter}
+                        width={400}
+                        height={400}
+                        className="max-w-[400px] max-h-[400px] w-full h-full object-contain"
+                      />
+                    </div>
+                    <span
+                      className="text-5xl font-bold text-black text-center mt-2"
+                      dangerouslySetInnerHTML={{
+                        __html: selectedExamples[egg.id],
+                      }}
                     />
                   </div>
+                ) : crackedEggs[egg.id] === "hidden" ? (
                   <span
-                    className="text-4xl font-bold text-white text-center mt-2"
-                    dangerouslySetInnerHTML={{
-                      __html: selectedExamples[egg.id],
-                    }}
-                  />
-                </div>
-              ) : crackedEggs[egg.id] === "hidden" ? (
-                <span
-                  className="text-[200px] font-bold absolute top-16 left-8 text-white cursor-pointer"
-                  onClick={() => handleShowExample(egg.id, egg.letter)}
-                >
-                  {egg.letter}
-                </span>
-              ) : (
-                <>
-                  <Image
-                    src={egg.img}
-                    alt={egg.letter}
-                    width={400}
-                    height={400}
-                    className="cursor-pointer transition-transform active:scale-90"
-                    onClick={() => handleCrack(egg.id, egg.letter)}
-                  />
-                  {crackedEggs[egg.id] === "cracked" && (
+                    className="text-[200px] font-bold absolute top-16 left-8 text-black cursor-pointer"
+                    onClick={() => handleShowExample(egg.id, egg.letter)}
+                  >
+                    {egg.letter}
+                  </span>
+                ) : (
+                  <>
                     <Image
-                      src="/cracked.png"
-                      alt="Cracked Egg"
-                      width={250}
-                      height={250}
-                      className="absolute top-16 left-8"
+                      src={egg.img}
+                      alt={egg.letter}
+                      width={350}
+                      height={350}
+                      className="cursor-pointer transition-transform active:scale-90"
+                      onClick={() => handleCrack(egg.id, egg.letter)}
                     />
-                  )}
-                </>
-              )}
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+                    {crackedEggs[egg.id] === "cracked" && (
+                      <Image
+                        src="/cracked.png"
+                        alt="Cracked Egg"
+                        width={200}
+                        height={200}
+                        className="absolute top-28 left-12"
+                      />
+                    )}
+                  </>
+                )}
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      </div>
     </div>
   );
 };
