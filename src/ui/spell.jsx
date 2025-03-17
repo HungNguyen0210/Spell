@@ -6,6 +6,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import { eggs } from "./data";
+import { highlightLetter } from "@/utils";
 
 const Spell = () => {
   const [crackedEggs, setCrackedEggs] = useState({});
@@ -13,35 +14,36 @@ const Spell = () => {
   const [selectedExamples, setSelectedExamples] = useState({});
   const [currentLetter, setCurrentLetter] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [learnedEggs, setLearnedEggs] = useState([]); // Danh sách trứng đã học
+  const [learnedEggs, setLearnedEggs] = useState([]);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-  const handleCrack = (id, letter, index) => {
-    // Kiểm tra nếu chưa học trứng trước đó
-    if (index > 0 && !learnedEggs.includes(eggs[index - 1].id)) {
+  const handleCrack = (letter, index) => {
+    if (index > 0 && !learnedEggs.includes(eggs[index - 1].letter)) {
       setShowModal(true);
       return;
     }
 
-    setCrackedEggs((prev) => ({ ...prev, [id]: "cracked" }));
+    setCrackedEggs((prev) => ({ ...prev, [letter]: "cracked" }));
     setTimeout(() => {
-      setCrackedEggs((prev) => ({ ...prev, [id]: "hidden" }));
+      setCrackedEggs((prev) => ({ ...prev, [letter]: "hidden" }));
       setCurrentLetter(letter);
     }, 800);
   };
 
-  const handleShowExample = (id, letter) => {
+  const handleShowExample = (letter) => {
+    const example = eggs.find((e) => e.letter === letter)?.example;
+    const highlightedExample = highlightLetter(example, letter);
+
     setSelectedExamples((prev) => ({
       ...prev,
-      [id]: eggs.find((e) => e.letter === letter)?.example || "",
+      [letter]: highlightedExample,
     }));
     setCurrentLetter(null);
-    setLearnedEggs((prev) => [...prev, id]); // Đánh dấu quả trứng đã học
+    setLearnedEggs((prev) => [...prev, letter]);
   };
-
   const closeModal = () => {
     setShowModal(false);
   };
@@ -53,7 +55,6 @@ const Spell = () => {
       className="h-screen w-screen flex flex-col justify-center items-center bg-cover bg-center bg-no-repeat"
       style={{ backgroundImage: "url('/bg.png')" }}
     >
-      {/* Modal cảnh báo */}
       {showModal && (
         <div className="fixed inset-0 flex justify-center items-center z-50 bg-opacity-50">
           <div className="bg-white p-6 rounded-3xl shadow-lg text-center relative lg:max-w-xl lg:h-64 max-w-[300px]">
@@ -63,7 +64,6 @@ const Spell = () => {
             >
               <IoIosCloseCircleOutline className="lg:text-5xl text-4xl" />
             </button>
-
             <p className="text-2xl lg:text-5xl pt-6 lg:pt-12 font-semibold text-red-500">
               Bé hãy học xong từ trước đó trước khi chọn trứng này!
             </p>
@@ -71,7 +71,6 @@ const Spell = () => {
         </div>
       )}
 
-      {/* Ô nền chứa trứng */}
       <div className="w-full lg:max-w-7xl max-w-[340px] h-[550px] bg-[#f6f4d3] rounded-3xl flex justify-center items-center p-6">
         <Swiper
           spaceBetween={10}
@@ -82,13 +81,13 @@ const Spell = () => {
           className="w-full h-full"
         >
           {eggs.map((egg, index) => (
-            <SwiperSlide key={egg.id} className="flex justify-center">
+            <SwiperSlide key={egg.letter} className="flex justify-center">
               <div className="relative w-[300px] h-[300px] flex flex-col items-center">
-                {selectedExamples[egg.id] ? (
+                {selectedExamples[egg.letter] ? (
                   <div className="flex flex-col items-center absolute top-0 left-0 w-full h-full">
                     <div className="w-[400px] h-[400px] flex justify-center items-center">
                       <Image
-                        src={egg.imgex}
+                        src={egg.images.example}
                         alt={egg.letter}
                         width={400}
                         height={400}
@@ -98,28 +97,28 @@ const Spell = () => {
                     <span
                       className="text-5xl font-bold text-black text-center mt-2"
                       dangerouslySetInnerHTML={{
-                        __html: selectedExamples[egg.id],
+                        __html: selectedExamples[egg.letter],
                       }}
-                    />
+                    ></span>
                   </div>
-                ) : crackedEggs[egg.id] === "hidden" ? (
+                ) : crackedEggs[egg.letter] === "hidden" ? (
                   <span
                     className="text-[250px] font-bold absolute top-16 left-8 text-black cursor-pointer"
-                    onClick={() => handleShowExample(egg.id, egg.letter)}
+                    onClick={() => handleShowExample(egg.letter)}
                   >
                     {egg.letter}
                   </span>
                 ) : (
                   <>
                     <Image
-                      src={egg.img}
+                      src={egg.images.egg}
                       alt={egg.letter}
                       width={350}
                       height={350}
                       className="cursor-pointer pt-14 lg:pt-14 transition-transform active:scale-90"
-                      onClick={() => handleCrack(egg.id, egg.letter, index)}
+                      onClick={() => handleCrack(egg.letter, index)}
                     />
-                    {crackedEggs[egg.id] === "cracked" && (
+                    {crackedEggs[egg.letter] === "cracked" && (
                       <Image
                         src="/cracked.png"
                         alt="Cracked Egg"
