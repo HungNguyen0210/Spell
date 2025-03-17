@@ -6,7 +6,7 @@ Dự án "Bé Học Chữ Cái" được phát triển bằng mô hình Waterfal
 
 ## Thông Tin Dự Án
 
-- **Lớp/Nhóm:** A01E/A02E
+- **Lớp:** A02E
 - **Số lượng thành viên:** 6
 - **Thành viên nhóm:**
   1. Phùng Gia Huy
