@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -10,15 +10,9 @@ import { highlightLetter } from "@/utils";
 
 const Spell = () => {
   const [crackedEggs, setCrackedEggs] = useState({});
-  const [isClient, setIsClient] = useState(false);
   const [selectedExamples, setSelectedExamples] = useState({});
-  const [currentLetter, setCurrentLetter] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [learnedEggs, setLearnedEggs] = useState([]);
-
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
   const handleCrack = (letter, index) => {
     if (index > 0 && !learnedEggs.includes(alphabet[index - 1].letter)) {
@@ -29,7 +23,6 @@ const Spell = () => {
     setCrackedEggs((prev) => ({ ...prev, [letter]: "cracked" }));
     setTimeout(() => {
       setCrackedEggs((prev) => ({ ...prev, [letter]: "hidden" }));
-      setCurrentLetter(letter);
     }, 800);
   };
 
@@ -41,14 +34,11 @@ const Spell = () => {
       ...prev,
       [letter]: highlightedExample,
     }));
-    setCurrentLetter(null);
     setLearnedEggs((prev) => [...prev, letter]);
   };
   const closeModal = () => {
     setShowModal(false);
   };
-
-  if (!isClient) return null;
 
   return (
     <div
