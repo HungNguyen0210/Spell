@@ -1,4 +1,4 @@
-export const eggs = Object.freeze([
+export const alphabet = Object.freeze([
   { letter: "A", example: "Công an", images: { egg: "/2.png", example: "/congan.png" } },
   { letter: "Ă", example: "Mặt trăng", images: { egg: "/3.png", example: "/mattrang.png" } },
   { letter: "Â", example: "Cái cân", images: { egg: "/5.png", example: "/caican.png" } },
