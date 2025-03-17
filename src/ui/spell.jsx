@@ -5,7 +5,7 @@ import Image from "next/image";
 import { IoIosCloseCircleOutline } from "react-icons/io";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { eggs } from "./data";
+import { alphabet } from "./data";
 import { highlightLetter } from "@/utils";
 
 const Spell = () => {
@@ -21,7 +21,7 @@ const Spell = () => {
   }, []);
 
   const handleCrack = (letter, index) => {
-    if (index > 0 && !learnedEggs.includes(eggs[index - 1].letter)) {
+    if (index > 0 && !learnedEggs.includes(alphabet[index - 1].letter)) {
       setShowModal(true);
       return;
     }
@@ -34,7 +34,7 @@ const Spell = () => {
   };
 
   const handleShowExample = (letter) => {
-    const example = eggs.find((e) => e.letter === letter)?.example;
+    const example = alphabet.find((e) => e.letter === letter)?.example;
     const highlightedExample = highlightLetter(example, letter);
 
     setSelectedExamples((prev) => ({
@@ -80,7 +80,7 @@ const Spell = () => {
           }}
           className="w-full h-full"
         >
-          {eggs.map((egg, index) => (
+          {alphabet.map((egg, index) => (
             <SwiperSlide key={egg.letter} className="flex justify-center">
               <div className="relative w-[300px] h-[300px] flex flex-col items-center">
                 {selectedExamples[egg.letter] ? (

@@ -1,1 +1,1 @@
-export { eggs } from "./egg"
+export { alphabet } from "./alphabet"
