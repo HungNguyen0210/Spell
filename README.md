@@ -60,8 +60,7 @@ Dự án "Bé Học Chữ Cái" được phát triển bằng mô hình Waterfal
 Nhấn Fork để tạo một bản sao về tài khoản
 
 ```sh
-git clone https://github.com/<your-username>/Spell.git
-cd Spell
+git clone https://github.com/<your-username>/Spell.git && cd Spell
 ```
 
 ### 2. Cài đặt dependencies:
