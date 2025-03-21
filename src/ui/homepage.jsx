@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { FaPlay } from "react-icons/fa";
 import MusicToggle from "../ui/MusicToggle";
+import GuideModal from "./GuideModel";
 
 export default function Homepage() {
     const [showSpell, setShowSpell] = useState(false);
@@ -14,6 +15,8 @@ export default function Homepage() {
     ) : (
         <div className="min-h-screen flex flex-col justify-center items-center gap-6 bg-cover bg-[url(/bg.png)] bg-center bg-no-repeat">
             <MusicToggle />
+            <GuideModal />
+
             <div className="lg:text-[200px] text-8xl pt-24 pb-12 lg:pb-0 lg:pt-0 font-bold flex justify-center">
                 <div className="text-[rgb(158,227,26)]">
                     A<span className="text-[rgb(27,232,164)]"> B</span>

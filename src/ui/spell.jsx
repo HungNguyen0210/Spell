@@ -7,6 +7,7 @@ import { IoIosCloseCircleOutline } from "react-icons/io";
 import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { alphabet } from "./data";
+import GuideModal from "./GuideModel";
 import MusicToggle from "./MusicToggle";
 
 const Spell = () => {
@@ -46,7 +47,11 @@ const Spell = () => {
             className="h-screen w-screen flex flex-col justify-center items-center bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: "url('/bg.png')" }}
         >
+            <button className="fixed top-4 left-4 text-4xl">
+                <i className="fa-solid fa-home"></i>
+            </button>
             <MusicToggle />
+            <GuideModal />
             {showModal && (
                 <div className="fixed inset-0 flex justify-center items-center z-50 bg-opacity-50">
                     <div className="bg-white p-6 rounded-3xl shadow-lg text-center relative lg:max-w-xl lg:h-64 max-w-[300px]">
