@@ -8,6 +8,7 @@ import "swiper/css";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { alphabet } from "./data";
 import GuideModal from "./GuideModel";
+import Homepage from "./homepage";
 import MusicToggle from "./MusicToggle";
 
 const Spell = () => {
@@ -15,6 +16,7 @@ const Spell = () => {
     const [selectedExamples, setSelectedExamples] = useState({});
     const [showModal, setShowModal] = useState(false);
     const [learnedEggs, setLearnedEggs] = useState([]);
+    const [showHome, setShowHome] = useState(false);
 
     const handleCrack = (letter, index) => {
         if (index > 0 && !learnedEggs.includes(alphabet[index - 1].letter)) {
@@ -42,12 +44,17 @@ const Spell = () => {
         setShowModal(false);
     };
 
-    return (
+    return showHome ? (
+        <Homepage />
+    ) : (
         <div
             className="h-screen w-screen flex flex-col justify-center items-center bg-cover bg-center bg-no-repeat"
             style={{ backgroundImage: "url('/bg.png')" }}
         >
-            <button className="fixed top-4 left-4 text-4xl">
+            <button
+                className="fixed top-4 left-4 text-4xl"
+                onClick={() => setShowHome(true)}
+            >
                 <i className="fa-solid fa-home"></i>
             </button>
             <MusicToggle />
